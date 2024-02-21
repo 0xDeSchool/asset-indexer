@@ -4,7 +4,8 @@
 
 import assert from "assert";
 import { Asset, SubScriber } from "../types";
-import { AssetCreatedLog, SubscribeModuleWhitelistedLog, SubscribeNFTDeployedLog, SubscribedLog, TransferLog, } from "../types/abi-interfaces/AssetHub";
+import { AssetCreatedLog, AssetMetadataUpdateLog, SubscribeModuleWhitelistedLog, SubscribeNFTDeployedLog, SubscribedLog, TransferLog, } from "../types/abi-interfaces/AssetHub";
+import { fetchMetadata } from "./asset_metadata";
 
 export const ZeroAddress = "0x0000000000000000000000000000000000000000"
 
@@ -42,6 +43,8 @@ export async function handleAssetCreatedAssetHubLog(log: AssetCreatedLog): Promi
   asset.subscribeModule = log.args.subscribeModule;
   asset.timestamp = log.args.timestamp.toBigInt();
   asset.hash = log.transactionHash;
+
+  await parseMetadata(asset, asset.timestamp?.toString())
   await asset.save();
 }
 
@@ -99,4 +102,31 @@ export async function handleTransferAssetHubLog(log: TransferLog): Promise<void>
   }
   asset.publisher = log.args.to;
   await asset.save();
+}
+
+export async function handleAssetMeataDataUpdateHubLog(log: AssetMetadataUpdateLog): Promise<void> {
+  logger.info("Handling TransferAsset");
+  assert(log.args, "No log args");
+  const id = log.address + "-" + log.args.assetId.toBigInt().toString();
+  const asset = await getOrCreateAsset(id);
+  if (!asset) {
+    logger.error("Asset not found");
+    return;
+  }
+  asset.contentURI = log.args.contentURI;
+  await parseMetadata(asset, log.args.timestamp.toString())
+  await asset.save();
+}
+
+async function parseMetadata(asset: Asset, timestamp?: string) {
+  if (!asset.contentURI) {
+    return
+  }
+  const metadata = await fetchMetadata(asset.contentURI);
+  if (metadata) {
+    metadata.timestamp = timestamp
+    asset.name = metadata.name;
+    asset.type = metadata.type;
+    asset.metadata = JSON.stringify(metadata);
+  }
 }

@@ -1,0 +1,38 @@
+import axios from "axios";
+export type AssetMetaData = {
+  type?: string;
+  name?: string;
+  description?: string;
+  image?: string;
+  content?: string;
+  tags?: string[];
+  extra?: any;
+  timestamp?: string;
+}
+
+const ipfsEndpoint = "https://ipfs.io/ipfs/";
+
+export async function fetchMetadata(uri: string): Promise<AssetMetaData | undefined> {
+  if (!uri) {
+    return;
+  }
+  try {
+    const res = await axios.get<AssetMetaData>(parseUri(uri))
+    return res.data
+  } catch (e) {
+    logger.error(e)
+  }
+}
+
+function parseUri(uri: string): string {
+  if (uri.startsWith("http://") || uri.startsWith("https://")) {
+    return uri;
+  }
+  if (uri.startsWith("ipfs://")) {
+    return ipfsEndpoint + uri.slice(7);
+  }
+  if (uri.startsWith("ar://")) {
+    return "https://arweave.net/" + uri.slice(5);
+  }
+  return ""
+}

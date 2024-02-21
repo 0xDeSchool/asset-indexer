@@ -42,7 +42,6 @@ const project: EthereumProject = {
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
     startBlock: 46171503,
-    endBlock: 46171536,
     options: {
       abi: 'AssetHub',
       address: '0xDD97348935bF46a947C41ef2E9389eFC26EeD363',

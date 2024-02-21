@@ -10,6 +10,13 @@ type Asset @entity {
   contentURI: String
   timestamp: BigInt @index
   hash: String
+
+  # metadata
+  name: String
+  type: String
+  metadata: String
+
+  # subscribe
   subscribeModule: String
   subscriberNFT: String
   subscribeCount: BigInt
