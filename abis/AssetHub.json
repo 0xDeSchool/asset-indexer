@@ -519,6 +519,18 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "subscribeNFT",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "subscribeNFTTokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "subscribeModule",
         "type": "address"
       },

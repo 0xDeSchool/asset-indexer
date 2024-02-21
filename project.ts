@@ -41,10 +41,11 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46129548,
+    startBlock: 46171503,
+    endBlock: 46171536,
     options: {
       abi: 'AssetHub',
-      address: '0x18D2018AFc53e6C461da1E2b7C1c05B1915c6a42',
+      address: '0xDD97348935bF46a947C41ef2E9389eFC26EeD363',
     },
     assets: new Map([['AssetHub', { file: './abis/AssetHub.json' }]]),
     mapping: {
@@ -56,6 +57,15 @@ const project: EthereumProject = {
           filter: {
             topics: [
               "AssetCreated(address,uint256,string,address,bytes,uint256)"
+            ]
+          }
+        },
+        {
+          handler: "handleTransferAssetHubLog",
+          kind: EthereumHandlerKind.Event,
+          filter: {
+            topics: [
+              "Transfer(address,address,uint256)"
             ]
           }
         },
@@ -88,57 +98,7 @@ const project: EthereumProject = {
         }
       ]
     }
-  },
-  {
-    kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46128314,
-    options: {
-      abi: 'AssetHub',
-      address: '0xE4BE76f210b61b7AE2DCce3F2116d477464bA7a5',
-    },
-    assets: new Map([['AssetHub', { file: './abis/AssetHub.json' }]]),
-    mapping: {
-      file: './dist/index.js',
-      handlers: [
-        {
-          handler: "handleAssetCreatedAssetHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "AssetCreated(address,uint256,string,address,bytes,uint256)"
-            ]
-          }
-        },
-        {
-          handler: "handleSubscribeModuleWhitelistedAssetHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "SubscribeModuleWhitelisted(address,bool,uint256)"
-            ]
-          }
-        },
-        {
-          handler: "handleSubscribeNFTDeployedAssetHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "SubscribeNFTDeployed(uint256,address,uint256)"
-            ]
-          }
-        },
-        {
-          handler: "handleSubscribedAssetHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "Subscribed(address,address,uint256,bytes,uint256)"
-            ]
-          }
-        }
-      ]
-    }
-  }],
+  },],
   repository: "https://github.com/0xDeSchool/asset-indexer",
 };
 

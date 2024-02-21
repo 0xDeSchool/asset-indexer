@@ -4,8 +4,9 @@
 
 import assert from "assert";
 import { Asset, SubScriber } from "../types";
-import { AssetCreatedLog, SubscribeModuleWhitelistedLog, SubscribeNFTDeployedLog, SubscribedLog, } from "../types/abi-interfaces/AssetHub";
+import { AssetCreatedLog, SubscribeModuleWhitelistedLog, SubscribeNFTDeployedLog, SubscribedLog, TransferLog, } from "../types/abi-interfaces/AssetHub";
 
+export const ZeroAddress = "0x0000000000000000000000000000000000000000"
 
 export async function getOrCreateAsset(
   id: string,
@@ -52,12 +53,13 @@ export async function handleSubscribeNFTDeployedAssetHubLog(log: SubscribeNFTDep
   logger.info("Handling SubscribeNFTDeployed");
   assert(log.args, "No log args");
 
-  const asset = await Asset.get(log.args.assetId.toBigInt().toString());
+  const id = log.address + "-" + log.args.assetId.toBigInt().toString();
+  const asset = await Asset.get(id);
   if (!asset) {
     logger.error("Asset not found");
     return;
   }
-  asset.SubScriberNFT = log.args.subscribeNFT;
+  asset.subscriberNFT = log.args.subscribeNFT;
   await asset.save()
 }
 
@@ -65,10 +67,36 @@ export async function handleSubscribedAssetHubLog(log: SubscribedLog): Promise<v
   logger.info("Handling Subscribed");
   assert(log.args, "No log args");
   const subscriber = await getOrCreateSubscriber(log.transactionHash);
-  subscriber.assetId = log.args.assetId.toBigInt();
-  subscriber.publisher = log.args.publisher;
+
+  const id = log.address + "-" + log.args.assetId.toBigInt().toString();
+  subscriber.assetId = id;
   subscriber.subscriber = log.args.subscriber;
+  subscriber.tokenId = log.args.subscribeNFTTokenId.toBigInt();
   subscriber.subscribeModule = log.args.subscribeModule;
+  subscriber.subscribeModuleData = log.args.subscribeModuleData;
   subscriber.timestamp = log.args.timestamp.toBigInt();
   await subscriber.save();
+
+  const asset = await getOrCreateAsset(id);
+  if (asset) {
+    if (!asset.subscribeCount) {
+      asset.subscribeCount = BigInt(1);
+    } else {
+      asset.subscribeCount = asset.subscribeCount + BigInt(1);
+    }
+    await asset.save();
+  }
+}
+
+export async function handleTransferAssetHubLog(log: TransferLog): Promise<void> {
+  logger.info("Handling TransferAsset");
+  assert(log.args, "No log args");
+  const id = log.address + "-" + log.args.tokenId.toBigInt().toString();
+  const asset = await getOrCreateAsset(id);
+  if (!asset) {
+    logger.error("Asset not found");
+    return;
+  }
+  asset.publisher = log.args.to;
+  await asset.save();
 }

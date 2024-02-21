@@ -8,19 +8,22 @@ type Asset @entity {
   contractAddress: String @index
   publisher: String @index
   contentURI: String
-  subscribeModule: String
-  SubScriberNFT: String
-  timestamp: BigInt
+  timestamp: BigInt @index
   hash: String
+  subscribeModule: String
+  subscriberNFT: String
+  subscribeCount: BigInt
+  subscribers: [SubScriber!] @derivedFrom(field: "asset")
 }
 
 type SubScriber @entity {
   id: ID! # Transaction hash
-  assetId: BigInt
-  publisher: String
-  subscriber: String
+  asset: Asset
+  subscriber: String @index
+  tokenId: BigInt
   subscribeModule: String
-  timestamp: BigInt
+  subscribeModuleData: String
+  timestamp: BigInt @index
 }
 
 type Transfer @entity {
