@@ -3,12 +3,15 @@
 # https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
 
 type Asset @entity {
-  id: ID! # Transaction hash
-  publisher: String
+  id: ID! # contractAddress+assetId
+  assetId: BigInt @index
+  contractAddress: String @index
+  publisher: String @index
   contentURI: String
   subscribeModule: String
   SubScriberNFT: String
   timestamp: BigInt
+  hash: String
 }
 
 type SubScriber @entity {

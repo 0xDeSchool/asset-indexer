@@ -8,12 +8,12 @@ import { AssetCreatedLog, SubscribeModuleWhitelistedLog, SubscribeNFTDeployedLog
 
 
 export async function getOrCreateAsset(
-  assetID: BigInt,
+  id: string,
 ): Promise<Asset> {
-  let asset = await Asset.get(assetID.toString());
+  let asset = await Asset.get(id);
   if (!asset) {
     asset = Asset.create({
-      id: assetID.toString(),
+      id: id,
     });
   }
   return asset;
@@ -32,11 +32,15 @@ export async function getOrCreateSubscriber(id: string): Promise<SubScriber> {
 export async function handleAssetCreatedAssetHubLog(log: AssetCreatedLog): Promise<void> {
   logger.info("Handling AssetCreated");
   assert(log.args, "No log args");
-  const asset = await getOrCreateAsset(log.args.assetId.toBigInt());
+  const id = log.address + "-" + log.args.assetId.toBigInt().toString();
+  const asset = await getOrCreateAsset(id);
+  asset.contractAddress = log.address;
+  asset.assetId = log.args.assetId.toBigInt();
   asset.contentURI = log.args.contentURI;
   asset.publisher = log.args.publisher;
   asset.subscribeModule = log.args.subscribeModule;
   asset.timestamp = log.args.timestamp.toBigInt();
+  asset.hash = log.transactionHash;
   await asset.save();
 }
 
