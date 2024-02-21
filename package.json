@@ -1,0 +1,42 @@
+{
+  "name": "asset-indexer",
+  "version": "0.0.1",
+  "description": "This project can be use as a starting point for developing your new Polygon Mumbai SubQuery project",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "subql build",
+    "codegen": "subql codegen",
+    "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
+    "dev": "subql codegen && subql build && docker-compose pull && docker-compose up --remove-orphans",
+    "prepack": "rm -rf dist && npm run build",
+    "test": "subql build && subql-node-ethereum test"
+  },
+  "homepage": "https://github.com/subquery/ethereum-subql-starter",
+  "repository": "github:subquery/ethereum-subql-starter",
+  "files": [
+    "dist",
+    "schema.graphql",
+    "project.yaml"
+  ],
+  "author": "DeSchool",
+  "license": "MIT",
+  "dependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
+    "@subql/common": "latest",
+    "@subql/types-core": "^0.5.0",
+    "@subql/types-ethereum": "latest",
+    "@subql/validator": "latest",
+    "assert": "^2.0.0",
+    "pino": "^8.19.0",
+    "tslib": "^2.6.2"
+  },
+  "devDependencies": {
+    "@subql/cli": "latest",
+    "@subql/node-ethereum": "latest",
+    "@subql/testing": "latest",
+    "@subql/types": "latest",
+    "ethers": "^5.7.2",
+    "typescript": "latest"
+  }
+}
