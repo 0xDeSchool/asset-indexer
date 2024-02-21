@@ -6,7 +6,7 @@ import {
 
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
-  specVersion: "0.0.2",
+  specVersion: "1.0.0",
   version: "0.0.2",
   name: "asset-polygon-mumbai",
   description: "Asset Indexer for Polygon Mumbai Testnet",
