@@ -41,7 +41,7 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46181131,
+    startBlock: 46196704,
     options: {
       abi: 'AssetHub',
       address: '0x64dB65222ecfA517F1dea6217B07Ab85DEFFD9Ce',
@@ -69,6 +69,29 @@ const project: EthereumProject = {
           }
         },
         {
+          handler: "handleAssetMeataDataUpdateHubLog",
+          kind: EthereumHandlerKind.Event,
+          filter: {
+            topics: [
+              "AssetMetadataUpdate(uint256,string,uint256)"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    kind: EthereumDatasourceKind.Runtime,
+    startBlock: 46210977,
+    options: {
+      abi: 'AssetHub',
+      address: '0x64dB65222ecfA517F1dea6217B07Ab85DEFFD9Ce',
+    },
+    assets: new Map([['AssetHub', { file: './abis/AssetHub.json' }]]),
+    mapping: {
+      file: './dist/index.js',
+      handlers: [
+        {
           handler: "handleSubscribeModuleWhitelistedAssetHubLog",
           kind: EthereumHandlerKind.Event,
           filter: {
@@ -91,22 +114,13 @@ const project: EthereumProject = {
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
-              "Subscribed(address,address,uint256,bytes,uint256)"
+              "Subscribed(address,address,uint256,address,uint256,address,bytes,uint256)"
             ]
           }
         },
-        {
-          handler: "handleAssetMeataDataUpdateHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "AssetMetadataUpdate(uint256,string,uint256)"
-            ]
-          }
-        }
       ]
     }
-  },],
+  }],
   repository: "https://github.com/0xDeSchool/asset-indexer",
 };
 
