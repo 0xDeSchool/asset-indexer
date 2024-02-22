@@ -1,3 +1,5 @@
+import fetch from "node-fetch"
+
 export type AssetMetaData = {
   type?: string;
   name?: string;
@@ -16,11 +18,11 @@ export async function fetchMetadata(uri: string): Promise<AssetMetaData | undefi
     return;
   }
   try {
-    const data = await fetch(parseUri(uri)).then(r => r.json())
-    return data
+    const data = await fetch(parseUri(uri)).then(r => r.json());
+    return data as AssetMetaData;
   } catch (e) {
-    logger.warn("fetch metadata error: ")
-    logger.warn(e)
+    logger.warn("fetch metadata error: ");
+    logger.warn(e);
   }
 }
 
