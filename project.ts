@@ -94,6 +94,15 @@ const project: EthereumProject = {
               "Subscribed(address,address,uint256,bytes,uint256)"
             ]
           }
+        },
+        {
+          handler: "handleAssetMeataDataUpdateHubLog",
+          kind: EthereumHandlerKind.Event,
+          filter: {
+            topics: [
+              "AssetMetadataUpdate(uint256,string,uint256)"
+            ]
+          }
         }
       ]
     }
