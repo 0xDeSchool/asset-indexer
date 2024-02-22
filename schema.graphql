@@ -7,7 +7,7 @@ type Asset @entity {
   assetId: BigInt @index
   contractAddress: String @index
   publisher: String @index
-  contentURI: String
+  contentUri: String
   timestamp: BigInt @index
   hash: String
 
@@ -18,7 +18,7 @@ type Asset @entity {
 
   # subscribe
   subscribeModule: String
-  subscriberNFT: String
+  subscriberNft: String
   subscribeCount: BigInt
   subscribers: [SubScriber!] @derivedFrom(field: "asset")
 }
