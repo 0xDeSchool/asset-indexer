@@ -38,7 +38,7 @@ export async function handleAssetCreatedAssetHubLog(log: AssetCreatedLog): Promi
   const asset = await getOrCreateAsset(id);
   asset.contractAddress = log.address;
   asset.assetId = log.args.assetId.toBigInt();
-  asset.contentURI = log.args.contentURI;
+  asset.contentUri = log.args.contentURI;
   asset.publisher = log.args.publisher;
   asset.subscribeModule = log.args.subscribeModule;
   asset.timestamp = log.args.timestamp.toBigInt();
@@ -62,7 +62,7 @@ export async function handleSubscribeNFTDeployedAssetHubLog(log: SubscribeNFTDep
     logger.error("Asset not found");
     return;
   }
-  asset.subscriberNFT = log.args.subscribeNFT;
+  asset.subscriberNft = log.args.subscribeNFT;
   await asset.save()
 }
 
@@ -95,9 +95,9 @@ export async function handleTransferAssetHubLog(log: TransferLog): Promise<void>
   logger.info("Handling TransferAsset");
   assert(log.args, "No log args");
   const id = log.address + "-" + log.args.tokenId.toBigInt().toString();
-  const asset = await getOrCreateAsset(id);
+  const asset = await Asset.get(id);
   if (!asset) {
-    logger.error("Asset not found");
+    logger.error("Asset not found: " + id);
     return;
   }
   asset.publisher = log.args.to;
@@ -105,24 +105,24 @@ export async function handleTransferAssetHubLog(log: TransferLog): Promise<void>
 }
 
 export async function handleAssetMeataDataUpdateHubLog(log: AssetMetadataUpdateLog): Promise<void> {
-  logger.info("Handling TransferAsset");
+  logger.info("Handling AssetMeataDataUpdate");
   assert(log.args, "No log args");
   const id = log.address + "-" + log.args.assetId.toBigInt().toString();
-  const asset = await getOrCreateAsset(id);
+  const asset = await Asset.get(id);
   if (!asset) {
-    logger.error("Asset not found");
+    logger.error("Asset not found: " + id);
     return;
   }
-  asset.contentURI = log.args.contentURI;
+  asset.contentUri = log.args.contentURI;
   await parseMetadata(asset, log.args.timestamp.toString())
   await asset.save();
 }
 
 async function parseMetadata(asset: Asset, timestamp?: string) {
-  if (!asset.contentURI) {
+  if (!asset.contentUri) {
     return
   }
-  const metadata = await fetchMetadata(asset.contentURI);
+  const metadata = await fetchMetadata(asset.contentUri);
   if (metadata) {
     metadata.timestamp = timestamp
     asset.name = metadata.name;

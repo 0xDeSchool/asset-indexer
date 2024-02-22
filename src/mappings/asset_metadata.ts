@@ -18,8 +18,9 @@ export async function fetchMetadata(uri: string): Promise<AssetMetaData | undefi
     return;
   }
   try {
-    const res = await fetch(parseUri(uri)).then(r => r.json());
-    return res.data;
+    const data = await fetch(parseUri(uri)).then(r => r.json());
+    logger.info(data)
+    return data;
   } catch (e) {
     logger.warn("fetch metadata error: ");
     logger.warn(e);
