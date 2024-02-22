@@ -41,10 +41,10 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46171503,
+    startBlock: 46181131,
     options: {
       abi: 'AssetHub',
-      address: '0xDD97348935bF46a947C41ef2E9389eFC26EeD363',
+      address: '0x64dB65222ecfA517F1dea6217B07Ab85DEFFD9Ce',
     },
     assets: new Map([['AssetHub', { file: './abis/AssetHub.json' }]]),
     mapping: {
