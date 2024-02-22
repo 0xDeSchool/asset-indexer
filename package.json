@@ -31,8 +31,7 @@
     "@subql/types-ethereum": "latest",
     "@subql/validator": "latest",
     "assert": "^2.0.0",
-    "got": "^14.2.0",
-    "node-fetch": "^3.3.2",
+    "axios": "0.28.0",
     "pino": "^8.19.0",
     "tslib": "^2.6.2"
   },
