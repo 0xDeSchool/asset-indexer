@@ -31,7 +31,7 @@
     "@subql/types-ethereum": "latest",
     "@subql/validator": "latest",
     "assert": "^2.0.0",
-    "axios": "0.28.0",
+    "node-fetch": "2.6.7",
     "pino": "^8.19.0",
     "tslib": "^2.6.2"
   },
@@ -40,6 +40,7 @@
     "@subql/node-ethereum": "latest",
     "@subql/testing": "latest",
     "@subql/types": "latest",
+    "@types/node-fetch": "^2.6.11",
     "ethers": "^5.7.2",
     "typescript": "latest"
   }

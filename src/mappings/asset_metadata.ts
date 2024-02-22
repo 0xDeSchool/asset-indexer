@@ -1,4 +1,4 @@
-import axios from 'axios'
+import fetch from "node-fetch"
 
 export type AssetMetaData = {
   type?: string;
@@ -18,7 +18,7 @@ export async function fetchMetadata(uri: string): Promise<AssetMetaData | undefi
     return;
   }
   try {
-    const res = await axios.get<AssetMetaData>(parseUri(uri));
+    const res = await fetch(parseUri(uri)).then(r => r.json());
     return res.data;
   } catch (e) {
     logger.warn("fetch metadata error: ");

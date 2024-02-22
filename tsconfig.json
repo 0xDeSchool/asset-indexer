@@ -6,7 +6,7 @@
     "declaration": true,
     "importHelpers": true,
     "resolveJsonModule": true,
-    "module": "NodeNext",
+    "module": "CommonJS",
     "outDir": "dist",
     "rootDir": "src",
     "target": "es2017",
