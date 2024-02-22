@@ -22,7 +22,6 @@
   "author": "DeSchool",
   "license": "MIT",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.515.0",
     "@aws-sdk/credential-providers": "^3.515.0",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",

@@ -80,7 +80,7 @@ export async function handleSubscribedAssetHubLog(log: SubscribedLog): Promise<v
   subscriber.timestamp = log.args.timestamp.toBigInt();
   await subscriber.save();
 
-  const asset = await getOrCreateAsset(id);
+  const asset = await Asset.get(id);
   if (asset) {
     if (!asset.subscribeCount) {
       asset.subscribeCount = BigInt(1);
