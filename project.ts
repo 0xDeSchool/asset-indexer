@@ -43,7 +43,7 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46196704,
+    startBlock: 8443963,
     options: {
       abi: 'AssetHub',
       address: AssetHub,
@@ -84,7 +84,7 @@ const project: EthereumProject = {
   },
   {
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46210977,
+    startBlock: 8443963,
     options: {
       abi: 'AssetHub',
       address: AssetHub,
