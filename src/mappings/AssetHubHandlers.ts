@@ -128,5 +128,6 @@ async function parseMetadata(asset: Asset, timestamp?: string) {
     asset.name = metadata.name;
     asset.type = metadata.type;
     asset.metadata = JSON.stringify(metadata);
+    asset.tags = metadata.tags ? JSON.stringify(metadata.tags) : undefined;
   }
 }

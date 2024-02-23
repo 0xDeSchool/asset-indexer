@@ -14,6 +14,7 @@ type Asset @entity {
   # metadata
   name: String
   type: String
+  tags: String
   metadata: String
 
   # subscribe
