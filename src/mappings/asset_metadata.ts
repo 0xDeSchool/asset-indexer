@@ -17,6 +17,14 @@ export async function fetchMetadata(uri: string): Promise<AssetMetaData | undefi
   if (!uri) {
     return;
   }
+  if (uri.trimStart().startsWith("{")) { //JSON
+    try {
+      const obj = JSON.parse(uri)
+      if (obj.name !== undefined) {
+        return obj
+      }
+    } catch {}
+  }
   try {
     const data = await fetch(parseUri(uri)).then(r => r.json());
     logger.info(data)
