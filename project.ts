@@ -4,12 +4,14 @@ import {
   EthereumHandlerKind,
 } from "@subql/types-ethereum";
 
+const AssetHub = "0x1D05d56E6Dc31dDC4CcA93664eB1ECFc475781d3"
+
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
   specVersion: "1.0.0",
-  version: "0.0.2",
-  name: "asset-polygon-mumbai",
-  description: "Asset Indexer for Polygon Mumbai Testnet",
+  version: "0.0.3",
+  name: "asset-op-sepolia",
+  description: "Asset Indexer",
   runner: {
     node: {
       name: "@subql/node-ethereum",
@@ -28,7 +30,7 @@ const project: EthereumProject = {
      * chainId is the EVM Chain ID, for Polygon this is 80001
      * https://chainlist.org/chain/80001
      */
-    chainId: "80001",
+    chainId: "11155420",
     /**
      * These endpoint(s) should be public non-pruned archive node
      * We recommend providing more than one endpoint for improved reliability, performance, and uptime
@@ -37,14 +39,14 @@ const project: EthereumProject = {
      * If you use a rate limited endpoint, adjust the --batch-size and --workers parameters
      * These settings can be found in your docker-compose.yaml, they will slow indexing but prevent your project being rate limited
      */
-    endpoint: ["https://rpc-mumbai.polygon.technology"],
+    endpoint: ["https://sepolia.optimism.io"],
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
     startBlock: 46196704,
     options: {
       abi: 'AssetHub',
-      address: '0x64dB65222ecfA517F1dea6217B07Ab85DEFFD9Ce',
+      address: AssetHub,
     },
     assets: new Map([['AssetHub', { file: './abis/AssetHub.json' }]]),
     mapping: {
@@ -85,7 +87,7 @@ const project: EthereumProject = {
     startBlock: 46210977,
     options: {
       abi: 'AssetHub',
-      address: '0x64dB65222ecfA517F1dea6217B07Ab85DEFFD9Ce',
+      address: AssetHub,
     },
     assets: new Map([['AssetHub', { file: './abis/AssetHub.json' }]]),
     mapping: {
