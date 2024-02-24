@@ -17,20 +17,20 @@ type Asset @entity {
   tags: String
   metadata: String
 
-  # subscribe
-  subscribeModule: String
-  subscriberNft: String
-  subscribeCount: BigInt
-  subscribers: [SubScriber!] @derivedFrom(field: "asset")
+  # collect
+  collectModule: String
+  collectNft: String
+  collectCount: BigInt
+  collectors: [Collector!] @derivedFrom(field: "asset")
 }
 
-type SubScriber @entity {
+type Collector @entity {
   id: ID! # Transaction hash
   asset: Asset
-  subscriber: String @index
+  collector: String @index
   tokenId: BigInt
-  subscribeModule: String
-  subscribeModuleData: String
+  collectModule: String
+  collectModuleData: String
   timestamp: BigInt @index
 }
 

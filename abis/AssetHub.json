@@ -22,7 +22,12 @@
   },
   {
     "inputs": [],
-    "name": "CallerNotSubscribeNFT",
+    "name": "CallerNotCollectNFT",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CollectModuleNotWhitelisted",
     "type": "error"
   },
   {
@@ -166,12 +171,12 @@
   },
   {
     "inputs": [],
-    "name": "InvalidInitialization",
+    "name": "InvalidCollectNFTImpl",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "InvalidSubscribeNFTImpl",
+    "name": "InvalidInitialization",
     "type": "error"
   },
   {
@@ -209,11 +214,6 @@
       }
     ],
     "name": "OwnableUnauthorizedAccount",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "SubscribeModuleNotWhitelisted",
     "type": "error"
   },
   {
@@ -298,28 +298,38 @@
         "type": "uint256"
       },
       {
-        "indexed": false,
-        "internalType": "string",
-        "name": "contentURI",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "subscribeModule",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "subscribeModuleInitData",
-        "type": "bytes"
-      },
-      {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "timestamp",
         "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "contentURI",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "collectNFT",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "gatedModule",
+            "type": "address"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct DataTypes.AssetCreatedEventData",
+        "name": "data",
+        "type": "tuple"
       }
     ],
     "name": "AssetCreated",
@@ -354,6 +364,43 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "assetId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "collectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "gatedModule",
+            "type": "address"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct DataTypes.AssetUpdateData",
+        "name": "data",
+        "type": "tuple"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "AssetUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "_fromTokenId",
@@ -367,6 +414,154 @@
       }
     ],
     "name": "BatchMetadataUpdate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "collectModule",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bool",
+        "name": "whitelisted",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "CollectModuleWhitelisted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "assetId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "collectNFT",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "CollectNFTDeployed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "publiser",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "assetId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "collectNFTTokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "CollectNFTTransfered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "assetId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "collector",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "publisher",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collectNFT",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "collectNFTTokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "collectModule",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "collectModuleData",
+        "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "Collected",
     "type": "event"
   },
   {
@@ -425,154 +620,6 @@
       }
     ],
     "name": "Paused",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "subscribeModule",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "bool",
-        "name": "whitelisted",
-        "type": "bool"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "SubscribeModuleWhitelisted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "subscribeNFT",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "SubscribeNFTDeployed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "publiser",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "subscribeNFTId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "SubscribeNFTTransfered",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "subscriber",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "publisher",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "subscribeNFT",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "subscribeNFTTokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "subscribeModule",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "subscribeModuleData",
-        "type": "bytes"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "Subscribed",
     "type": "event"
   },
   {
@@ -660,6 +707,68 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "assetId",
+        "type": "uint256"
+      }
+    ],
+    "name": "assetCollectCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "assetId",
+        "type": "uint256"
+      }
+    ],
+    "name": "assetCollectNFT",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "assetId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "assetGated",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "owner",
         "type": "address"
@@ -674,6 +783,48 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "assetId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "collectModuleData",
+        "type": "bytes"
+      }
+    ],
+    "name": "collect",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "collectModule",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "whitelist",
+        "type": "bool"
+      }
+    ],
+    "name": "collectModuleWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -710,22 +861,32 @@
             "type": "string"
           },
           {
+            "internalType": "bytes",
+            "name": "assetCreateModuleData",
+            "type": "bytes"
+          },
+          {
             "internalType": "address",
-            "name": "subscribeModule",
+            "name": "collectModule",
             "type": "address"
           },
           {
             "internalType": "bytes",
-            "name": "subscribeModuleInitData",
+            "name": "collectModuleInitData",
             "type": "bytes"
           },
           {
+            "internalType": "address",
+            "name": "gatedModule",
+            "type": "address"
+          },
+          {
             "internalType": "bytes",
-            "name": "assetModuleData",
+            "name": "gatedModuleInitData",
             "type": "bytes"
           }
         ],
-        "internalType": "struct DataTypes.CreateAssetData",
+        "internalType": "struct DataTypes.AssetCreateData",
         "name": "data",
         "type": "tuple"
       }
@@ -755,7 +916,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "subscribeNFTId",
+        "name": "collectNFTId",
         "type": "uint256"
       },
       {
@@ -769,7 +930,7 @@
         "type": "address"
       }
     ],
-    "name": "emitSubscribeNFTTransferEvent",
+    "name": "emitCollectNFTTransferEvent",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -795,7 +956,7 @@
   },
   {
     "inputs": [],
-    "name": "getAssetModule",
+    "name": "getCreateAssetModule",
     "outputs": [
       {
         "internalType": "address",
@@ -825,7 +986,7 @@
       },
       {
         "internalType": "address",
-        "name": "subscribeNFT",
+        "name": "collectNFT",
         "type": "address"
       },
       {
@@ -871,7 +1032,7 @@
         "type": "address"
       }
     ],
-    "name": "isSubscribeModuleWhitelisted",
+    "name": "isCollectModuleWhitelisted",
     "outputs": [
       {
         "internalType": "bool",
@@ -1033,11 +1194,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "assetModule_",
+        "name": "assetModule",
         "type": "address"
       }
     ],
-    "name": "setAssetModule",
+    "name": "setCreateAssetModule",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1058,91 +1219,6 @@
     "name": "setTokenURI",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "subscribeModuleData",
-        "type": "bytes"
-      }
-    ],
-    "name": "subscribe",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "subscribeModule",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "whitelist",
-        "type": "bool"
-      }
-    ],
-    "name": "subscribeModuleWhitelist",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      }
-    ],
-    "name": "subscribeNFTContract",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "subscriber",
-        "type": "address"
-      }
-    ],
-    "name": "subscribedCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1199,25 +1275,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      }
-    ],
-    "name": "totalSubscribers",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "from",
         "type": "address"
@@ -1254,6 +1311,36 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "assetId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "collectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "gatedModule",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct DataTypes.AssetUpdateData",
+        "name": "data",
+        "type": "tuple"
+      }
+    ],
+    "name": "update",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "newImplementation",
         "type": "address"
@@ -1267,6 +1354,30 @@
     "name": "upgradeToAndCall",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "assetId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "collector",
+        "type": "address"
+      }
+    ],
+    "name": "userCollectCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   }
 ]

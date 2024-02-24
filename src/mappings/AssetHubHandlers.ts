@@ -3,8 +3,8 @@
 // Auto-generated
 
 import assert from "assert";
-import { Asset, SubScriber } from "../types";
-import { AssetCreatedLog, AssetMetadataUpdateLog, SubscribeModuleWhitelistedLog, SubscribeNFTDeployedLog, SubscribedLog, TransferLog, } from "../types/abi-interfaces/AssetHub";
+import { Asset, Collector } from "../types";
+import { AssetCreatedLog, AssetMetadataUpdateLog, CollectModuleWhitelistedLog, CollectNFTDeployedLog, CollectedLog, TransferLog, } from "../types/abi-interfaces/AssetHub";
 import { fetchMetadata } from "./asset_metadata";
 
 export const ZeroAddress = "0x0000000000000000000000000000000000000000"
@@ -21,14 +21,14 @@ export async function getOrCreateAsset(
   return asset;
 }
 
-export async function getOrCreateSubscriber(id: string): Promise<SubScriber> {
-  let subscriber = await SubScriber.get(id);
-  if (!subscriber) {
-    subscriber = SubScriber.create({
+export async function getOrCreateCollector(id: string): Promise<Collector> {
+  let collector = await Collector.get(id);
+  if (!collector) {
+    collector = Collector.create({
       id: id
     });
   }
-  return subscriber;
+  return collector;
 }
 
 export async function handleAssetCreatedAssetHubLog(log: AssetCreatedLog): Promise<void> {
@@ -38,9 +38,10 @@ export async function handleAssetCreatedAssetHubLog(log: AssetCreatedLog): Promi
   const asset = await getOrCreateAsset(id);
   asset.contractAddress = log.address;
   asset.assetId = log.args.assetId.toBigInt();
-  asset.contentUri = log.args.contentURI;
+  asset.contentUri = log.args.data.contentURI;
   asset.publisher = log.args.publisher;
-  asset.subscribeModule = log.args.subscribeModule;
+  asset.collectModule = log.args.data.collectModule;
+  asset.collectNft = log.args.data.collectNFT;
   asset.timestamp = log.args.timestamp.toBigInt();
   asset.hash = log.transactionHash;
 
@@ -48,12 +49,12 @@ export async function handleAssetCreatedAssetHubLog(log: AssetCreatedLog): Promi
   await asset.save();
 }
 
-export async function handleSubscribeModuleWhitelistedAssetHubLog(log: SubscribeModuleWhitelistedLog): Promise<void> {
+export async function handleCollectModuleWhitelistedAssetHubLog(log: CollectModuleWhitelistedLog): Promise<void> {
   // Place your code logic here
 }
 
-export async function handleSubscribeNFTDeployedAssetHubLog(log: SubscribeNFTDeployedLog): Promise<void> {
-  logger.info("Handling SubscribeNFTDeployed");
+export async function handleCollectNFTDeployedAssetHubLog(log: CollectNFTDeployedLog): Promise<void> {
+  logger.info("Handling CollectNFTDeployed");
   assert(log.args, "No log args");
 
   const id = log.address + "-" + log.args.assetId.toBigInt().toString();
@@ -62,30 +63,30 @@ export async function handleSubscribeNFTDeployedAssetHubLog(log: SubscribeNFTDep
     logger.error("Asset not found");
     return;
   }
-  asset.subscriberNft = log.args.subscribeNFT;
+  asset.collectNft = log.args.collectNFT;
   await asset.save()
 }
 
-export async function handleSubscribedAssetHubLog(log: SubscribedLog): Promise<void> {
-  logger.info("Handling Subscribed");
+export async function handleCollectedAssetHubLog(log: CollectedLog): Promise<void> {
+  logger.info("Handling Collected");
   assert(log.args, "No log args");
-  const subscriber = await getOrCreateSubscriber(log.transactionHash);
+  const collector = await getOrCreateCollector(log.transactionHash);
 
   const id = log.address + "-" + log.args.assetId.toBigInt().toString();
-  subscriber.assetId = id;
-  subscriber.subscriber = log.args.subscriber;
-  subscriber.tokenId = log.args.subscribeNFTTokenId.toBigInt();
-  subscriber.subscribeModule = log.args.subscribeModule;
-  subscriber.subscribeModuleData = log.args.subscribeModuleData;
-  subscriber.timestamp = log.args.timestamp.toBigInt();
-  await subscriber.save();
+  collector.assetId = id;
+  collector.collector = log.args.collector;
+  collector.tokenId = log.args.collectNFTTokenId.toBigInt();
+  collector.collectModule = log.args.collectModule;
+  collector.collectModuleData = log.args.collectModuleData;
+  collector.timestamp = log.args.timestamp.toBigInt();
+  await collector.save();
 
   const asset = await Asset.get(id);
   if (asset) {
-    if (!asset.subscribeCount) {
-      asset.subscribeCount = BigInt(1);
+    if (!asset.collectCount) {
+      asset.collectCount = BigInt(1);
     } else {
-      asset.subscribeCount = asset.subscribeCount + BigInt(1);
+      asset.collectCount = asset.collectCount + BigInt(1);
     }
     await asset.save();
   }

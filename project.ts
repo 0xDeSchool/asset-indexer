@@ -57,7 +57,7 @@ const project: EthereumProject = {
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
-              "AssetCreated(address,uint256,string,address,bytes,uint256)"
+              "AssetCreated(address,uint256,bytes,uint256)"
             ]
           }
         },
@@ -94,29 +94,29 @@ const project: EthereumProject = {
       file: './dist/index.js',
       handlers: [
         {
-          handler: "handleSubscribeModuleWhitelistedAssetHubLog",
+          handler: "handleCollectModuleWhitelistedAssetHubLog",
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
-              "SubscribeModuleWhitelisted(address,bool,uint256)"
+              "CollectModuleWhitelisted(address,bool,uint256)"
             ]
           }
         },
         {
-          handler: "handleSubscribeNFTDeployedAssetHubLog",
+          handler: "handleCollectNFTDeployedAssetHubLog",
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
-              "SubscribeNFTDeployed(uint256,address,uint256)"
+              "CollectNFTDeployed(uint256,address,uint256)"
             ]
           }
         },
         {
-          handler: "handleSubscribedAssetHubLog",
+          handler: "handleCollectedAssetHubLog",
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
-              "Subscribed(address,address,uint256,address,uint256,address,bytes,uint256)"
+              "Collected(address,address,uint256,address,uint256,address,bytes,uint256)"
             ]
           }
         },
