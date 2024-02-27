@@ -1,7 +1,8 @@
 import { Contract } from "ethers";
 import { fetchMetadata } from "./asset_metadata";
 import { Asset, ContractInfo } from "../types";
-const contractNameAbi = [
+
+const contractNameAbi = `[
   {
     "inputs": [],
     "name": "contractURI",
@@ -29,6 +30,7 @@ const contractNameAbi = [
     "type": "function"
   }
 ]
+`
 
 type ContractMetadata = {
   name?: string;
