@@ -90,19 +90,19 @@ export async function handleCollectModuleWhitelistedAssetHubLog(log: CollectModu
   // Place your code logic here
 }
 
-export async function handleCollectNFTDeployedAssetHubLog(log: CollectNFTDeployedLog): Promise<void> {
-  logger.info("Handling CollectNFTDeployed");
-  assert(log.args, "No log args");
+// export async function handleCollectNFTDeployedAssetHubLog(log: CollectNFTDeployedLog): Promise<void> {
+//   logger.info("Handling CollectNFTDeployed");
+//   assert(log.args, "No log args");
 
-  const id = log.address + "-" + log.args.assetId.toBigInt().toString();
-  const asset = await Asset.get(id);
-  if (!asset) {
-    logger.error("Asset not found");
-    return;
-  }
-  asset.collectNftId = log.args.collectNFT;
-  await asset.save()
-}
+//   const id = log.address + "-" + log.args.assetId.toBigInt().toString();
+//   const asset = await Asset.get(id);
+//   if (!asset) {
+//     logger.error("Asset not found");
+//     return;
+//   }
+//   asset.collectNftId = log.args.collectNFT;
+//   await asset.save()
+// }
 
 export async function handleCollectedAssetHubLog(log: CollectedLog): Promise<void> {
   logger.info("Handling Collected");

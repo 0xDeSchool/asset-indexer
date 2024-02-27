@@ -108,15 +108,6 @@ const project: EthereumProject = {
           }
         },
         {
-          handler: "handleCollectNFTDeployedAssetHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "CollectNFTDeployed(uint256,address,uint256)"
-            ]
-          }
-        },
-        {
           handler: "handleCollectedAssetHubLog",
           kind: EthereumHandlerKind.Event,
           filter: {
