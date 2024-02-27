@@ -154,7 +154,7 @@ const project: EthereumProject = {
   },
   {
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46407717,
+    startBlock: 46407706,
     options: {
       abi: 'NftAssetGatedModule',
       address: NftAssetGatedModule,
