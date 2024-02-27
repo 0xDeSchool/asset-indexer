@@ -5,7 +5,7 @@ import {
 } from "@subql/types-ethereum";
 
 const AssetHub = "0x3f08fde5431962887b7456D7F760138AEdd84f3B"
-const FeeCollectModule = "0x761eE98C1181003e8cb66027F9eceD2d9e3964a8"
+const FeeCollectModule = "0xbC6d1CFE6C69AC9085419eB637913C21548cb14d"
 const NftAssetGatedModule = "0xD9a4bDA289cfE6E4636fB60127f0762d4898Ecbd"
 
 // Can expand the Datasource processor types via the generic param
@@ -86,7 +86,7 @@ const project: EthereumProject = {
   },
   {
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 8443963,
+    startBlock: 46407728,
     options: {
       abi: 'AssetHub',
       address: AssetHub,
@@ -129,7 +129,7 @@ const project: EthereumProject = {
   },
   {
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46407726,
+    startBlock: 46411246,
     options: {
       abi: 'FeeCollectModule',
       address: FeeCollectModule,
