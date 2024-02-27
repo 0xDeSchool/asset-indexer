@@ -59,7 +59,7 @@ const project: EthereumProject = {
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
-              "AssetCreated(address,uint256,bytes,uint256)"
+              "AssetCreated(address,uint256,uint256,tuple(string,address,address,address))"
             ]
           }
         },
