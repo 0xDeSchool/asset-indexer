@@ -93,6 +93,7 @@ const project: EthereumProject = {
     },
     assets: new Map([
       ['AssetHub', { file: './abis/AssetHub.json' }],
+      ['IContractMetadata', { file: './abis/IContractMetadata.json' }],
     ]),
     mapping: {
       file: './dist/index.js',

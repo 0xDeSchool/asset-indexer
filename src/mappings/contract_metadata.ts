@@ -1,36 +1,8 @@
 import { Contract } from "ethers";
 import { fetchMetadata } from "./asset_metadata";
 import { Asset, ContractInfo } from "../types";
+import { IContractMetadata__factory, IContractMetadata } from "../types/contracts";
 
-const contractNameAbi = `[
-  {
-    "inputs": [],
-    "name": "contractURI",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "name",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  }
-]
-`
 
 type ContractMetadata = {
   name?: string;
@@ -58,9 +30,9 @@ export async function setContract(address: string) {
 }
 
 export async function getContractMetadata(contract: string): Promise<ContractMetadata | undefined> {
-  const ct = new Contract(contract, contractNameAbi)
+  const ct = IContractMetadata__factory.connect(contract, api)
   try {
-    const contentURI = await ct.callStatic.contractURI()
+    const contentURI = await ct.contractURI()
     if (contentURI) {
       const metadata = await fetchMetadata(contentURI)
       return metadata as ContractInfo
@@ -70,7 +42,7 @@ export async function getContractMetadata(contract: string): Promise<ContractMet
   }
 
   try {
-    const name = await ct.callStatic.name()
+    const name = await ct.name()
     return {
       name: name as string
     }
