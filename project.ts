@@ -4,7 +4,9 @@ import {
   EthereumHandlerKind,
 } from "@subql/types-ethereum";
 
-const AssetHub = "0x1D05d56E6Dc31dDC4CcA93664eB1ECFc475781d3"
+const AssetHub = "0x3f08fde5431962887b7456D7F760138AEdd84f3B"
+const FeeCollectModule = "0x761eE98C1181003e8cb66027F9eceD2d9e3964a8"
+const NftAssetGatedModule = "0xD9a4bDA289cfE6E4636fB60127f0762d4898Ecbd"
 
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
@@ -43,7 +45,7 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 8443963,
+    startBlock: 46407728,
     options: {
       abi: 'AssetHub',
       address: AssetHub,
@@ -71,7 +73,7 @@ const project: EthereumProject = {
           }
         },
         {
-          handler: "handleAssetMeataDataUpdateHubLog",
+          handler: "handleAssetMetadataUpdateHubLog",
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
@@ -89,7 +91,9 @@ const project: EthereumProject = {
       abi: 'AssetHub',
       address: AssetHub,
     },
-    assets: new Map([['AssetHub', { file: './abis/AssetHub.json' }]]),
+    assets: new Map([
+      ['AssetHub', { file: './abis/AssetHub.json' }],
+    ]),
     mapping: {
       file: './dist/index.js',
       handlers: [
@@ -122,7 +126,58 @@ const project: EthereumProject = {
         },
       ]
     }
-  }],
+  },
+  {
+    kind: EthereumDatasourceKind.Runtime,
+    startBlock: 46407726,
+    options: {
+      abi: 'FeeCollectModule',
+      address: FeeCollectModule,
+    },
+    assets: new Map([
+      ['FeeCollectModule', { file: './abis/FeeCollectModule.json' }],
+    ]),
+    mapping: {
+      file: './dist/index.js',
+      handlers: [
+        {
+          handler: "handleFeeCollectModuleConfigChanged",
+          kind: EthereumHandlerKind.Event,
+          filter: {
+            topics: [
+              "FeeConfigChanged(uint256,tuple(address,address,uint256))"
+            ]
+          }
+        },
+      ]
+    }
+  },
+  {
+    kind: EthereumDatasourceKind.Runtime,
+    startBlock: 46407717,
+    options: {
+      abi: 'NftAssetGatedModule',
+      address: NftAssetGatedModule,
+    },
+    assets: new Map([
+      ['NftAssetGatedModule', { file: './abis/NftAssetGatedModule.json' }],
+    ]),
+    mapping: {
+      file: './dist/index.js',
+      handlers: [
+        {
+          handler: "handleNftGatedModuleConfigChanged",
+          kind: EthereumHandlerKind.Event,
+          filter: {
+            topics: [
+              "ConfigChanged(uint256,tuple(address,uint8,uint256,uint256,bool)[])"
+            ]
+          }
+        },
+      ]
+    }
+  }
+  ],
   repository: "https://github.com/0xDeSchool/asset-indexer",
 };
 

@@ -991,7 +991,7 @@
       },
       {
         "internalType": "address",
-        "name": "assetModule",
+        "name": "createAssetModule",
         "type": "address"
       }
     ],

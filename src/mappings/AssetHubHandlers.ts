@@ -3,9 +3,10 @@
 // Auto-generated
 
 import assert from "assert";
-import { Asset, Collector } from "../types";
-import { AssetCreatedLog, AssetMetadataUpdateLog, CollectModuleWhitelistedLog, CollectNFTDeployedLog, CollectedLog, TransferLog, } from "../types/abi-interfaces/AssetHub";
+import { Asset, AssetMetadataHistory, Collector, ContractInfo } from "../types";
+import { AssetCreatedLog, AssetMetadataUpdateLog, AssetUpdatedLog, CollectModuleWhitelistedLog, CollectNFTDeployedLog, CollectedLog, TransferLog } from "../types/abi-interfaces/AssetHub";
 import { fetchMetadata } from "./asset_metadata";
+import { getContractMetadata, setContract } from "./contract_metadata";
 
 export const ZeroAddress = "0x0000000000000000000000000000000000000000"
 
@@ -21,6 +22,16 @@ export async function getOrCreateAsset(
   return asset;
 }
 
+function createAssetMetadataHistroy(id: string, assetId: string, metadata?: string, timestamp?: bigint) {
+  const h = AssetMetadataHistory.create({
+    id: id,
+    assetId: assetId,
+    metadata: metadata,
+    timestamp: timestamp,
+  });
+  return h.save();
+}
+
 export async function getOrCreateCollector(id: string): Promise<Collector> {
   let collector = await Collector.get(id);
   if (!collector) {
@@ -31,21 +42,47 @@ export async function getOrCreateCollector(id: string): Promise<Collector> {
   return collector;
 }
 
+
 export async function handleAssetCreatedAssetHubLog(log: AssetCreatedLog): Promise<void> {
   logger.info("Handling AssetCreated");
   assert(log.args, "No log args");
   const id = log.address + "-" + log.args.assetId.toBigInt().toString();
   const asset = await getOrCreateAsset(id);
-  asset.contractAddress = log.address;
+  asset.hub = log.address;
   asset.assetId = log.args.assetId.toBigInt();
   asset.contentUri = log.args.data.contentURI;
   asset.publisher = log.args.publisher;
-  asset.collectModule = log.args.data.collectModule;
-  asset.collectNft = log.args.data.collectNFT;
+  asset.collectModuleId = log.args.data.collectModule;
+  asset.collectNftId = log.args.data.collectNFT;
   asset.timestamp = log.args.timestamp.toBigInt();
   asset.hash = log.transactionHash;
 
   await parseMetadata(asset, asset.timestamp?.toString())
+  await asset.save();
+  await createAssetMetadataHistroy(log.transactionHash, id, asset.metadata, asset.timestamp)
+}
+
+export async function handleAssetUpdateHubLog(log: AssetUpdatedLog) {
+  logger.info("Handling AssetUpdated");
+  assert(log.args, "No log args");
+  const id = log.address + "-" + log.args.assetId.toBigInt().toString();
+  const asset = await Asset.get(id);
+  if (!asset) {
+    logger.error("Asset not found");
+    return;
+  }
+  if (asset.collectModuleId != log.args.data.collectModule) {
+    asset.collectModuleId = log.args.data.collectModule;
+    if (asset.collectModuleId) {
+      setContract(asset.collectModuleId)
+    }
+  }
+  if (asset.collectNftId != log.args.data.gatedModule) {
+    asset.collectNftId = log.args.data.gatedModule;
+    if (asset.collectNftId) {
+      setContract(asset.collectNftId)
+    }
+  }
   await asset.save();
 }
 
@@ -63,7 +100,7 @@ export async function handleCollectNFTDeployedAssetHubLog(log: CollectNFTDeploye
     logger.error("Asset not found");
     return;
   }
-  asset.collectNft = log.args.collectNFT;
+  asset.collectNftId = log.args.collectNFT;
   await asset.save()
 }
 
@@ -95,18 +132,22 @@ export async function handleCollectedAssetHubLog(log: CollectedLog): Promise<voi
 export async function handleTransferAssetHubLog(log: TransferLog): Promise<void> {
   logger.info("Handling TransferAsset");
   assert(log.args, "No log args");
+  if (log.args.from == ZeroAddress) {
+    logger.warn("First create asset before transfer, skipping...")
+    return;
+  }
   const id = log.address + "-" + log.args.tokenId.toBigInt().toString();
   const asset = await Asset.get(id);
   if (!asset) {
-    logger.error("Asset not found: " + id);
+    logger.warn("Asset not found: " + id);
     return;
   }
   asset.publisher = log.args.to;
   await asset.save();
 }
 
-export async function handleAssetMeataDataUpdateHubLog(log: AssetMetadataUpdateLog): Promise<void> {
-  logger.info("Handling AssetMeataDataUpdate");
+export async function handleAssetMetadataUpdateHubLog(log: AssetMetadataUpdateLog): Promise<void> {
+  logger.info("Handling AssetMetadataUpdate");
   assert(log.args, "No log args");
   const id = log.address + "-" + log.args.assetId.toBigInt().toString();
   const asset = await Asset.get(id);
@@ -117,6 +158,7 @@ export async function handleAssetMeataDataUpdateHubLog(log: AssetMetadataUpdateL
   asset.contentUri = log.args.contentURI;
   await parseMetadata(asset, log.args.timestamp.toString())
   await asset.save();
+  await createAssetMetadataHistroy(log.transactionHash, id, asset.metadata, asset.timestamp)
 }
 
 async function parseMetadata(asset: Asset, timestamp?: string) {

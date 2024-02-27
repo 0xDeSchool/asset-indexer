@@ -3,9 +3,9 @@
 # https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
 
 type Asset @entity {
-  id: ID! # contractAddress+assetId
+  id: ID! # hub Address+assetId
   assetId: BigInt @index
-  contractAddress: String @index
+  hub: String @index
   publisher: String @index
   contentUri: String
   timestamp: BigInt @index
@@ -16,12 +16,23 @@ type Asset @entity {
   type: String
   tags: String
   metadata: String
+  metadataHistories: [AssetMetadataHistory!] @derivedFrom(field: "asset")
 
   # collect
-  collectModule: String
-  collectNft: String
+  collectModule: CollectModule
+  collectNft: ContractInfo
   collectCount: BigInt
   collectors: [Collector!] @derivedFrom(field: "asset")
+
+  # gated
+  gatedModule: ContractInfo
+}
+
+type AssetMetadataHistory @entity {
+  id: ID! # Transaction hash
+  asset: Asset
+  timestamp: BigInt @index
+  metadata: String
 }
 
 type Collector @entity {
@@ -32,6 +43,28 @@ type Collector @entity {
   collectModule: String
   collectModuleData: String
   timestamp: BigInt @index
+}
+
+type CollectModule @entity {
+  id: ID! # contractAddress
+  initData: String
+}
+
+type GatedModule @entity {
+  id: ID! # contractAddress
+  initData: String
+}
+
+type ContractInfo @entity {
+  id: ID! # contractAddress
+  name: String
+  symbol: String
+  description: String
+  image: String
+  bannerImage: String
+  featuredImage: String
+  externalLink: String
+  collaborators: String
 }
 
 type Transfer @entity {
