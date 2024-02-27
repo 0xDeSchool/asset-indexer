@@ -32,7 +32,7 @@ const project: EthereumProject = {
      * chainId is the EVM Chain ID, for Polygon this is 80001
      * https://chainlist.org/chain/80001
      */
-    chainId: "11155420",
+    chainId: "80001",
     /**
      * These endpoint(s) should be public non-pruned archive node
      * We recommend providing more than one endpoint for improved reliability, performance, and uptime
@@ -41,7 +41,7 @@ const project: EthereumProject = {
      * If you use a rate limited endpoint, adjust the --batch-size and --workers parameters
      * These settings can be found in your docker-compose.yaml, they will slow indexing but prevent your project being rate limited
      */
-    endpoint: ["wss://optimism-sepolia.blockpi.network/v1/ws/6d97bd9c2f02f27452ad14424f29e075b95d0084"],
+    endpoint: ["https://rpc-mumbai.polygon.technology"],
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
