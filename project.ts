@@ -112,7 +112,7 @@ const project: EthereumProject = {
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
-              "Collected(address,address,uint256,address,uint256,address,bytes,uint256)"
+              "Collected(uint256,address,address,address,uint256,address,bytes,uint256)"
             ]
           }
         },
