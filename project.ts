@@ -52,26 +52,25 @@ const project: EthereumProject = {
     },
     assets: new Map([
       ['AssetHub', { file: './abis/AssetHub.json' }],
-      ['AssetHubLogic', { file: './abis/AssetHubLogic.json' }]
     ]),
     mapping: {
       file: './dist/index.js',
       handlers: [
-        {
-          handler: "handleAssetCreatedAssetHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "AssetCreated(address,uint256,tuple(string,address,address,address,uint256))"
-            ]
-          }
-        },
         {
           handler: "handleTransferAssetHubLog",
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
               "Transfer(address,address,uint256)"
+            ]
+          }
+        },
+        {
+          handler: "handleCollectModuleWhitelistedAssetHubLog",
+          kind: EthereumHandlerKind.Event,
+          filter: {
+            topics: [
+              "CollectModuleWhitelisted(address,bool,uint256)"
             ]
           }
         },
@@ -91,22 +90,21 @@ const project: EthereumProject = {
     kind: EthereumDatasourceKind.Runtime,
     startBlock: 46494688,
     options: {
-      abi: 'AssetHub',
+      abi: 'AssetHubLogic',
       address: AssetHub,
     },
     assets: new Map([
-      ['AssetHub', { file: './abis/AssetHub.json' }],
-      ['IContractMetadata', { file: './abis/IContractMetadata.json' }],
+      ['AssetHubLogic', { file: './abis/AssetHubLogic.json' }]
     ]),
     mapping: {
       file: './dist/index.js',
       handlers: [
         {
-          handler: "handleCollectModuleWhitelistedAssetHubLog",
+          handler: "handleAssetCreatedAssetHubLog",
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
-              "CollectModuleWhitelisted(address,bool,uint256)"
+              "AssetCreated(address,uint256,tuple(string,address,address,address,uint256))"
             ]
           }
         },
@@ -131,6 +129,7 @@ const project: EthereumProject = {
     },
     assets: new Map([
       ['FeeCollectModule', { file: './abis/FeeCollectModule.json' }],
+      ['IContractMetadata', { file: './abis/IContractMetadata.json' }],
     ]),
     mapping: {
       file: './dist/index.js',

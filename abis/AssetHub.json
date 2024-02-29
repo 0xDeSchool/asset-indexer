@@ -16,58 +16,6 @@
     "type": "error"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "publisher",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "components": [
-          {
-            "internalType": "string",
-            "name": "contentURI",
-            "type": "string"
-          },
-          {
-            "internalType": "address",
-            "name": "collectNFT",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "collectModule",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "gatedModule",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "timestamp",
-            "type": "uint256"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct DataTypes.AssetCreatedEventData",
-        "name": "data",
-        "type": "tuple"
-      }
-    ],
-    "name": "AssetCreated",
-    "type": "event"
-  },
-  {
     "inputs": [],
     "name": "CallerNotCollectNFT",
     "type": "error"
