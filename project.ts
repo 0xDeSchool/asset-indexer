@@ -4,7 +4,7 @@ import {
   EthereumHandlerKind,
 } from "@subql/types-ethereum";
 
-const AssetHub = "0x88BB255AE0084abb6c2E2Ffab5396826Ab3e01c2"
+const AssetHub = "0xAa03bB718E705Df3C950b63f0C6f2cAEdDf167c7"
 const FeeCollectModule = "0x7fe80b0a7b538ae7023b2d72b41dc4b784bd4e9a"
 const NftAssetGatedModule = "0x01a1b19db5eae3596ce09a258a73748f20bc9695"
 
@@ -45,7 +45,7 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46493061,
+    startBlock: 46494688,
     options: {
       abi: 'AssetHub',
       address: AssetHub,
@@ -62,7 +62,7 @@ const project: EthereumProject = {
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
-              "AssetCreated(address,uint256,string,address,address,address,uint256)"
+              "AssetCreated(address,uint256,tuple(string,address,address,address,uint256))"
             ]
           }
         },
@@ -89,7 +89,7 @@ const project: EthereumProject = {
   },
   {
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46493061,
+    startBlock: 46494688,
     options: {
       abi: 'AssetHub',
       address: AssetHub,

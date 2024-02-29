@@ -11,4 +11,12 @@ subqlTest(
 );
 */
 
+subqlTest(
+  "test create", // test name
+  46493070, // block height to process
+  [], // dependent entities
+  [], // expected entities
+  "handleAssetCreatedAssetHubLog" //handler name
+);
+
 
