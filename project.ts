@@ -4,9 +4,9 @@ import {
   EthereumHandlerKind,
 } from "@subql/types-ethereum";
 
-const AssetHub = "0x9571C8d7cD92a2384Ecd703f945da66644ddE394"
-const FeeCollectModule = "0xbC6d1CFE6C69AC9085419eB637913C21548cb14d"
-const NftAssetGatedModule = "0xD9a4bDA289cfE6E4636fB60127f0762d4898Ecbd"
+const AssetHub = "0xd2a9694fd84e50816895eb719cae5496a249d09b"
+const FeeCollectModule = "0x7fe80b0a7b538ae7023b2d72b41dc4b784bd4e9a"
+const NftAssetGatedModule = "0x01a1b19db5eae3596ce09a258a73748f20bc9695"
 
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
@@ -45,12 +45,15 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46484472,
+    startBlock: 46487670,
     options: {
       abi: 'AssetHub',
       address: AssetHub,
     },
-    assets: new Map([['AssetHub', { file: './abis/AssetHub.json' }]]),
+    assets: new Map([
+      ['AssetHub', { file: './abis/AssetHub.json' }],
+      ['AssetHubLogic', { file: './abis/AssetHubLogic.json' }]
+    ]),
     mapping: {
       file: './dist/index.js',
       handlers: [
@@ -59,7 +62,7 @@ const project: EthereumProject = {
           kind: EthereumHandlerKind.Event,
           filter: {
             topics: [
-              "AssetCreated(address,uint256,uint256,tuple(string,address,address,address))"
+              "AssetCreated(address,uint256,string,address,address,address,uint256)"
             ]
           }
         },
@@ -86,7 +89,7 @@ const project: EthereumProject = {
   },
   {
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46484472,
+    startBlock: 46487670,
     options: {
       abi: 'AssetHub',
       address: AssetHub,
@@ -121,7 +124,7 @@ const project: EthereumProject = {
   },
   {
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46411246,
+    startBlock: 46487528,
     options: {
       abi: 'FeeCollectModule',
       address: FeeCollectModule,
@@ -146,7 +149,7 @@ const project: EthereumProject = {
   },
   {
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46407706,
+    startBlock: 46487528,
     options: {
       abi: 'NftAssetGatedModule',
       address: NftAssetGatedModule,

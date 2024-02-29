@@ -3,10 +3,11 @@
 // Auto-generated
 
 import assert from "assert";
-import { Asset, AssetMetadataHistory, Collector, ContractInfo } from "../types";
-import { AssetCreatedLog, AssetMetadataUpdateLog, AssetUpdatedLog, CollectModuleWhitelistedLog, CollectNFTDeployedLog, CollectedLog, TransferLog } from "../types/abi-interfaces/AssetHub";
+import { Asset, AssetMetadataHistory, Collector } from "../types";
+import { AssetMetadataUpdateLog, AssetUpdatedLog, CollectModuleWhitelistedLog, TransferLog } from "../types/abi-interfaces/AssetHub";
 import { fetchMetadata } from "./asset_metadata";
 import { getContractMetadata, setContract } from "./contract_metadata";
+import { AssetCreatedLog, CollectedLog } from "../types/abi-interfaces/AssetHubLogic";
 
 export const ZeroAddress = "0x0000000000000000000000000000000000000000"
 
@@ -50,10 +51,10 @@ export async function handleAssetCreatedAssetHubLog(log: AssetCreatedLog): Promi
   const asset = await getOrCreateAsset(id);
   asset.hub = log.address;
   asset.assetId = log.args.assetId.toBigInt();
-  asset.contentUri = log.args.data.contentURI;
+  asset.contentUri = log.args.contentURI;
   asset.publisher = log.args.publisher;
-  asset.collectModuleId = log.args.data.collectModule;
-  asset.collectNftId = log.args.data.collectNFT;
+  asset.collectModuleId = log.args.collectModule;
+  asset.collectNftId = log.args.collectNFT;
   asset.timestamp = log.args.timestamp.toBigInt();
   asset.hash = log.transactionHash;
 

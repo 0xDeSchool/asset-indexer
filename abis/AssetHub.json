@@ -1,10 +1,5 @@
 [
   {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -28,11 +23,6 @@
   {
     "inputs": [],
     "name": "CollectModuleNotWhitelisted",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ERC1167FailedCreateClone",
     "type": "error"
   },
   {
@@ -171,7 +161,12 @@
   },
   {
     "inputs": [],
-    "name": "InvalidCollectNFTImpl",
+    "name": "InvalidCreateAssetModule",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidGatedModule",
     "type": "error"
   },
   {
@@ -287,59 +282,6 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "address",
-        "name": "publisher",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      },
-      {
-        "components": [
-          {
-            "internalType": "string",
-            "name": "contentURI",
-            "type": "string"
-          },
-          {
-            "internalType": "address",
-            "name": "collectNFT",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "collectModule",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "gatedModule",
-            "type": "address"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct DataTypes.AssetCreatedEventData",
-        "name": "data",
-        "type": "tuple"
-      }
-    ],
-    "name": "AssetCreated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
         "internalType": "uint256",
         "name": "assetId",
         "type": "uint256"
@@ -446,31 +388,6 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "collectNFT",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "CollectNFTDeployed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
         "internalType": "address",
         "name": "publiser",
         "type": "address"
@@ -507,61 +424,6 @@
       }
     ],
     "name": "CollectNFTTransfered",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "assetId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "collector",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "publisher",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "collectNFT",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "collectNFTTokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "collectModule",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "collectModuleData",
-        "type": "bytes"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "Collected",
     "type": "event"
   },
   {
