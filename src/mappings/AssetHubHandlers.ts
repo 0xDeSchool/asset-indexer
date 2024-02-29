@@ -4,10 +4,10 @@
 
 import assert from "assert";
 import { Asset, AssetMetadataHistory, Collector } from "../types";
-import { AssetMetadataUpdateLog, AssetUpdatedLog, CollectModuleWhitelistedLog, TransferLog } from "../types/abi-interfaces/AssetHub";
+import { AssetMetadataUpdateLog, AssetUpdatedLog, CollectModuleWhitelistedLog, TransferLog, AssetCreatedLog } from "../types/abi-interfaces/AssetHub";
 import { fetchMetadata } from "./asset_metadata";
 import { setContract } from "./contract_metadata";
-import { AssetCreatedLog, CollectedLog } from "../types/abi-interfaces/AssetHubLogic";
+import { CollectedLog } from "../types/abi-interfaces/AssetHubLogic";
 
 export const ZeroAddress = "0x0000000000000000000000000000000000000000"
 
