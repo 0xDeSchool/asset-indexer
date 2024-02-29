@@ -4,7 +4,7 @@ import {
   EthereumHandlerKind,
 } from "@subql/types-ethereum";
 
-const AssetHub = "0xd2a9694fd84e50816895eb719cae5496a249d09b"
+const AssetHub = "0x88BB255AE0084abb6c2E2Ffab5396826Ab3e01c2"
 const FeeCollectModule = "0x7fe80b0a7b538ae7023b2d72b41dc4b784bd4e9a"
 const NftAssetGatedModule = "0x01a1b19db5eae3596ce09a258a73748f20bc9695"
 
@@ -45,7 +45,7 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46487670,
+    startBlock: 46493061,
     options: {
       abi: 'AssetHub',
       address: AssetHub,
@@ -89,7 +89,7 @@ const project: EthereumProject = {
   },
   {
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46487670,
+    startBlock: 46493061,
     options: {
       abi: 'AssetHub',
       address: AssetHub,
@@ -135,15 +135,15 @@ const project: EthereumProject = {
     mapping: {
       file: './dist/index.js',
       handlers: [
-        {
-          handler: "handleFeeCollectModuleConfigChanged",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "FeeConfigChanged(uint256,tuple(address,address,uint256))"
-            ]
-          }
-        },
+        // {
+        //   handler: "handleFeeCollectModuleConfigChanged",
+        //   kind: EthereumHandlerKind.Event,
+        //   filter: {
+        //     topics: [
+        //       "FeeConfigChanged(uint256,tuple(address,address,uint256))"
+        //     ]
+        //   }
+        // },
       ]
     }
   },
@@ -160,15 +160,15 @@ const project: EthereumProject = {
     mapping: {
       file: './dist/index.js',
       handlers: [
-        {
-          handler: "handleNftGatedModuleConfigChanged",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "ConfigChanged(uint256,tuple(address,uint8,uint256,uint256,bool)[])"
-            ]
-          }
-        },
+        // {
+        //   handler: "handleNftGatedModuleConfigChanged",
+        //   kind: EthereumHandlerKind.Event,
+        //   filter: {
+        //     topics: [
+        //       "ConfigChanged(uint256,tuple(address,uint8,uint256,uint256,bool)[])"
+        //     ]
+        //   }
+        // },
       ]
     }
   }
