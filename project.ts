@@ -4,10 +4,7 @@ import {
   EthereumHandlerKind,
 } from "@subql/types-ethereum";
 
-const AssetHubManager = ""
-const AssetHub = "0xAa03bB718E705Df3C950b63f0C6f2cAEdDf167c7"
-const FeeCollectModule = "0x7fe80b0a7b538ae7023b2d72b41dc4b784bd4e9a"
-const NftAssetGatedModule = "0x01a1b19db5eae3596ce09a258a73748f20bc9695"
+const AssetHubManager = "0xA4D8dE0E238e374E2d66f4353e08eEfD6E3fB340"
 
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
@@ -47,6 +44,7 @@ const project: EthereumProject = {
   dataSources: [
     {
       kind: EthereumDatasourceKind.Runtime,
+      startBlock: 46524321,
       options: {
         abi: "AssetManager",
         address: AssetHubManager

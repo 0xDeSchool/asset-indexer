@@ -21,9 +21,9 @@ export async function handleAssetHubDeployedLog(log: AssetHubDeployedLog) {
   let assetHub = await getOrCreate(log.transactionHash);
   assetHub.hub = log.args.assetHub;
   assetHub.admin = log.args.admin;
-  assetHub.assetCreateModule = log.args.assetCreateModule;
   assetHub.feeCollectModule = log.args.feeCollectModule;
   assetHub.nftGatedModule = log.args.nftGatedModule;
+  assetHub.feeCreateAssetModule = log.args.feeAssetCreateModule;
   assetHub.timestamp = log.block.timestamp
   await assetHub.save()
 

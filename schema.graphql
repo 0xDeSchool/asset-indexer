@@ -73,6 +73,6 @@ type AssetHub @entity {
   hub: String
   feeCollectModule: String
   nftGatedModule: String
-  assetCreateModule: String
+  feeCreateAssetModule: String
   timestamp: BigInt @index
 }
