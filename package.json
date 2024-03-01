@@ -25,10 +25,10 @@
     "@aws-sdk/credential-providers": "^3.515.0",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
-    "@subql/common": "latest",
+    "@subql/common": "^3.4.1",
     "@subql/types-core": "^0.5.0",
-    "@subql/types-ethereum": "latest",
-    "@subql/validator": "latest",
+    "@subql/types-ethereum": "^3.3.1",
+    "@subql/validator": "^2.2.0",
     "abab": "^2.0.6",
     "assert": "^2.0.0",
     "node-fetch": "2.6.7",
@@ -36,10 +36,10 @@
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@subql/cli": "latest",
-    "@subql/node-ethereum": "latest",
-    "@subql/testing": "latest",
-    "@subql/types": "latest",
+    "@subql/cli": "^4.3.0",
+    "@subql/node-ethereum": "^3.8.1",
+    "@subql/testing": "^2.1.0",
+    "@subql/types": "^3.3.1",
     "@types/node-fetch": "^2.6.11",
     "ethers": "^5.7.2",
     "typescript": "latest"
