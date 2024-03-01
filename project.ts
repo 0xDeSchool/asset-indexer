@@ -8,9 +8,9 @@ const AssetHubManager = "0xA4D8dE0E238e374E2d66f4353e08eEfD6E3fB340"
 
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
-  specVersion: "0.2.1",
+  specVersion: "1.0.0",
   version: "0.0.3",
-  name: "asset-op-sepolia",
+  name: "assethub",
   description: "Asset Indexer",
   runner: {
     node: {

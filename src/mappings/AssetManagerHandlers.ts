@@ -27,5 +27,5 @@ export async function handleAssetHubDeployedLog(log: AssetHubDeployedLog) {
   assetHub.timestamp = log.block.timestamp
   await assetHub.save()
 
-  await createAssetHubEventsDatasource({ address: assetHub })
+  await createAssetHubEventsDatasource({ address: assetHub.hub })
 }
