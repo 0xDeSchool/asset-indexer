@@ -4,10 +4,9 @@
 
 import assert from "assert";
 import { Asset, AssetMetadataHistory, Collector } from "../types";
-import { AssetMetadataUpdateLog, AssetUpdatedLog, CollectModuleWhitelistedLog, TransferLog } from "../types/abi-interfaces/AssetHub";
+import { AssetMetadataUpdateLog, AssetUpdatedLog, TransferLog, CollectedLog, AssetCreatedLog } from "../types/abi-interfaces/IAssetHubEvents";
 import { fetchMetadata } from "./asset_metadata";
 import { setContract } from "./contract_metadata";
-import { CollectedLog, AssetCreatedLog } from "../types/abi-interfaces/AssetHubLogic";
 
 export const ZeroAddress = "0x0000000000000000000000000000000000000000"
 
@@ -51,11 +50,11 @@ export async function handleAssetCreatedAssetHubLog(log: AssetCreatedLog): Promi
   const asset = await getOrCreateAsset(id);
   asset.hub = log.address;
   asset.assetId = log.args.assetId.toBigInt();
-  asset.contentUri = log.args.data.contentURI;
+  asset.contentUri = log.args.contentURI;
   asset.publisher = log.args.publisher;
-  asset.collectModuleId = log.args.data.collectModule;
-  asset.collectNftId = log.args.data.collectNFT;
-  asset.timestamp = log.args.data.timestamp.toBigInt();
+  asset.collectModuleId = log.args.collectModule;
+  asset.collectNftId = log.args.collectNFT;
+  asset.timestamp = log.args.timestamp.toBigInt();
   asset.hash = log.transactionHash;
 
   await parseMetadata(asset, asset.timestamp?.toString())
@@ -85,10 +84,6 @@ export async function handleAssetUpdateHubLog(log: AssetUpdatedLog) {
     }
   }
   await asset.save();
-}
-
-export async function handleCollectModuleWhitelistedAssetHubLog(log: CollectModuleWhitelistedLog): Promise<void> {
-  // Place your code logic here
 }
 
 // export async function handleCollectNFTDeployedAssetHubLog(log: CollectNFTDeployedLog): Promise<void> {

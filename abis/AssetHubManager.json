@@ -38,6 +38,11 @@
   },
   {
     "inputs": [],
+    "name": "NameHubExisted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NotInitializing",
     "type": "error"
   },
@@ -115,6 +120,12 @@
         "indexed": false,
         "internalType": "address",
         "name": "nftGatedModule",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "assetCreateModule",
         "type": "address"
       }
     ],
@@ -224,6 +235,52 @@
             "internalType": "address",
             "name": "nftGatedModule",
             "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "assetCreateModule",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct AssetHubInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "name": "assetHubInfoByName",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "assetHub",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "nftGatedModule",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "assetCreateModule",
+            "type": "address"
           }
         ],
         "internalType": "struct AssetHubInfo",
@@ -267,6 +324,25 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "name": "exitsName",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "components": [
           {
             "internalType": "address",
@@ -281,6 +357,11 @@
           {
             "internalType": "address",
             "name": "nftGatedModuleFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCreateAssetModuleFactory",
             "type": "address"
           }
         ],

@@ -4,13 +4,14 @@ import {
   EthereumHandlerKind,
 } from "@subql/types-ethereum";
 
+const AssetHubManager = ""
 const AssetHub = "0xAa03bB718E705Df3C950b63f0C6f2cAEdDf167c7"
 const FeeCollectModule = "0x7fe80b0a7b538ae7023b2d72b41dc4b784bd4e9a"
 const NftAssetGatedModule = "0x01a1b19db5eae3596ce09a258a73748f20bc9695"
 
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
-  specVersion: "1.0.0",
+  specVersion: "0.2.1",
   version: "0.0.3",
   name: "asset-op-sepolia",
   description: "Asset Indexer",
@@ -43,134 +44,84 @@ const project: EthereumProject = {
      */
     endpoint: ["https://rpc-mumbai.polygon.technology"],
   },
-  dataSources: [{
-    kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46494688,
-    options: {
-      abi: 'AssetHub',
-      address: AssetHub,
+  dataSources: [
+    {
+      kind: EthereumDatasourceKind.Runtime,
+      options: {
+        abi: "AssetManager",
+        address: AssetHubManager
+      },
+      assets: new Map([
+        ['AssetManager', { file: './abis/AssetHubManager.json' }],
+      ]),
+      mapping: {
+        file: './dist/index.js',
+        handlers: [
+          {
+            handler: "handleAssetHubDeployedLog",
+            kind: EthereumHandlerKind.Event,
+            filter: {
+              topics: [
+                "AssetHubDeployed(address,address,address,address,address)"
+              ]
+            }
+          },
+        ]
+      }
     },
-    assets: new Map([
-      ['AssetHub', { file: './abis/AssetHub.json' }],
-    ]),
-    mapping: {
-      file: './dist/index.js',
-      handlers: [
-        {
-          handler: "handleTransferAssetHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "Transfer(address,address,uint256)"
-            ]
+  ],
+  templates: [
+    {
+      name: "AssetHubEvents",
+      kind: EthereumDatasourceKind.Runtime,
+      options: {
+        abi: 'IAssetHubEvents',
+      },
+      assets: new Map([
+        ['IAssetHubEvents', { file: './abis/IAssetHubEvents.json' }]
+      ]),
+      mapping: {
+        file: './dist/index.js',
+        handlers: [
+          {
+            handler: "handleAssetCreatedAssetHubLog",
+            kind: EthereumHandlerKind.Event,
+            filter: {
+              topics: [
+                "AssetCreated(address,uint256,tuple(string,address,address,address,uint256))"
+              ]
+            }
+          },
+          {
+            handler: "handleCollectedAssetHubLog",
+            kind: EthereumHandlerKind.Event,
+            filter: {
+              topics: [
+                "Collected(uint256,address,address,address,uint256,address,bytes,uint256)"
+              ]
+            }
+          },
+          {
+            handler: "handleTransferAssetHubLog",
+            kind: EthereumHandlerKind.Event,
+            filter: {
+              topics: [
+                "Transfer(address,address,uint256)"
+              ]
+            }
+          },
+          {
+            handler: "handleAssetMetadataUpdateHubLog",
+            kind: EthereumHandlerKind.Event,
+            filter: {
+              topics: [
+                "AssetMetadataUpdate(uint256,string,uint256)"
+              ]
+            }
           }
-        },
-        {
-          handler: "handleCollectModuleWhitelistedAssetHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "CollectModuleWhitelisted(address,bool,uint256)"
-            ]
-          }
-        },
-        {
-          handler: "handleAssetMetadataUpdateHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "AssetMetadataUpdate(uint256,string,uint256)"
-            ]
-          }
-        }
-      ]
-    }
-  },
-  {
-    kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46494688,
-    options: {
-      abi: 'AssetHubLogic',
-      address: AssetHub,
+        ]
+      }
     },
-    assets: new Map([
-      ['AssetHubLogic', { file: './abis/AssetHubLogic.json' }]
-    ]),
-    mapping: {
-      file: './dist/index.js',
-      handlers: [
-        {
-          handler: "handleAssetCreatedAssetHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "AssetCreated(address,uint256,tuple(string,address,address,address,uint256))"
-            ]
-          }
-        },
-        {
-          handler: "handleCollectedAssetHubLog",
-          kind: EthereumHandlerKind.Event,
-          filter: {
-            topics: [
-              "Collected(uint256,address,address,address,uint256,address,bytes,uint256)"
-            ]
-          }
-        },
-      ]
-    }
-  },
-  {
-    kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46487528,
-    options: {
-      abi: 'FeeCollectModule',
-      address: FeeCollectModule,
-    },
-    assets: new Map([
-      ['FeeCollectModule', { file: './abis/FeeCollectModule.json' }],
-      ['IContractMetadata', { file: './abis/IContractMetadata.json' }],
-    ]),
-    mapping: {
-      file: './dist/index.js',
-      handlers: [
-        // {
-        //   handler: "handleFeeCollectModuleConfigChanged",
-        //   kind: EthereumHandlerKind.Event,
-        //   filter: {
-        //     topics: [
-        //       "FeeConfigChanged(uint256,tuple(address,address,uint256))"
-        //     ]
-        //   }
-        // },
-      ]
-    }
-  },
-  {
-    kind: EthereumDatasourceKind.Runtime,
-    startBlock: 46487528,
-    options: {
-      abi: 'NftAssetGatedModule',
-      address: NftAssetGatedModule,
-    },
-    assets: new Map([
-      ['NftAssetGatedModule', { file: './abis/NftAssetGatedModule.json' }],
-    ]),
-    mapping: {
-      file: './dist/index.js',
-      handlers: [
-        // {
-        //   handler: "handleNftGatedModuleConfigChanged",
-        //   kind: EthereumHandlerKind.Event,
-        //   filter: {
-        //     topics: [
-        //       "ConfigChanged(uint256,tuple(address,uint8,uint256,uint256,bool)[])"
-        //     ]
-        //   }
-        // },
-      ]
-    }
-  }
   ],
   repository: "https://github.com/0xDeSchool/asset-indexer",
 };

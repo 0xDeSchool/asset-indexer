@@ -4,3 +4,4 @@ global.atob = atob as any;
 
 export * from "./mappings/AssetHubHandlers"
 export * from "./mappings/CollectModuleHandlers"
+export * from "./mappings/AssetManagerHandlers"
