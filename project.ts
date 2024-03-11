@@ -60,7 +60,7 @@ const project: EthereumProject = {
             kind: EthereumHandlerKind.Event,
             filter: {
               topics: [
-                "AssetHubDeployed(address,name,address,address,address,address)"
+                "AssetHubDeployed(address,string,address,address,address,address)"
               ]
             }
           },
