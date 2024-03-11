@@ -7,6 +7,9 @@ import { Asset, AssetMetadataHistory, Collector } from "../types";
 import { AssetMetadataUpdateLog, AssetUpdatedLog, TransferLog, CollectedLog, AssetCreatedLog } from "../types/abi-interfaces/IAssetHubEvents";
 import { fetchMetadata } from "./asset_metadata";
 import { setContract } from "./contract_metadata";
+import { UpgradedEvent } from "../types/contracts/IAssetHubEvents";
+import { getOrCreateHub } from "..";
+import { AssetHub__factory, IAssetHubEvents__factory } from "../types/contracts";
 
 export const ZeroAddress = "0x0000000000000000000000000000000000000000"
 
@@ -155,6 +158,15 @@ export async function handleAssetMetadataUpdateHubLog(log: AssetMetadataUpdateLo
   await parseMetadata(asset, log.args.timestamp.toString())
   await asset.save();
   await createAssetMetadataHistroy(log.transactionHash, id, asset.metadata, asset.timestamp)
+}
+
+export async function handleAssetHubUpgradedLog(log: UpgradedEvent): Promise<void> {
+  logger.info("Handling AssetHubUpgraded");
+  assert(log.args, "No log args");
+
+  const hub = await getOrCreateHub(log.address);
+  hub.version = await AssetHub__factory.connect(log.address, api).version();
+  await hub.save();
 }
 
 async function parseMetadata(asset: Asset, timestamp?: string) {

@@ -4,7 +4,7 @@ import {
   EthereumHandlerKind,
 } from "@subql/types-ethereum";
 
-const AssetHubManager = "0xA4D8dE0E238e374E2d66f4353e08eEfD6E3fB340"
+const AssetHubManager = "0x3c6bE7A6A82cFc25AcE1DB08c143F5F094efEFE6"
 
 // Can expand the Datasource processor types via the generic param
 const project: EthereumProject = {
@@ -44,7 +44,7 @@ const project: EthereumProject = {
   dataSources: [
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 46524321,
+      startBlock: 46908386,
       options: {
         abi: "AssetManager",
         address: AssetHubManager
@@ -76,7 +76,8 @@ const project: EthereumProject = {
         abi: 'IAssetHubEvents',
       },
       assets: new Map([
-        ['IAssetHubEvents', { file: './abis/IAssetHubEvents.json' }]
+        ['IAssetHubEvents', { file: './abis/IAssetHubEvents.json' }],
+        ['AssetHub', { file: './abis/AssetHub.json' }]
       ]),
       mapping: {
         file: './dist/index.js',
@@ -114,6 +115,15 @@ const project: EthereumProject = {
             filter: {
               topics: [
                 "AssetMetadataUpdate(uint256,string,uint256)"
+              ]
+            }
+          },
+          {
+            handler: "handleAssetHubUpgradedLog",
+            kind: EthereumHandlerKind.Event,
+            filter: {
+              topics: [
+                "Upgraded(address)"
               ]
             }
           }
