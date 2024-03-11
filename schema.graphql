@@ -70,10 +70,10 @@ type ContractInfo @entity {
 type AssetHub @entity {
   id: ID! # hub address
   admin: String
-  name: String
+  name: String @index(unique: true)
   feeCollectModule: String
   nftGatedModule: String
-  feeCreateAssetModule: String
+  createAssetModule: String
   timestamp: BigInt @index
   implementation: String
   version: Int

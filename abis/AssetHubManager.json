@@ -11,6 +11,11 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "AssetHubNotExisted",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -37,7 +42,13 @@
     "type": "error"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "hubName",
+        "type": "string"
+      }
+    ],
     "name": "NameHubExisted",
     "type": "error"
   },
@@ -106,6 +117,12 @@
       },
       {
         "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "assetHub",
         "type": "address"
@@ -125,7 +142,7 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "feeAssetCreateModule",
+        "name": "assetCreateModule",
         "type": "address"
       }
     ],
@@ -240,6 +257,11 @@
             "internalType": "address",
             "name": "assetCreateModule",
             "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collectNFT",
+            "type": "address"
           }
         ],
         "internalType": "struct AssetHubInfo",
@@ -281,6 +303,11 @@
             "internalType": "address",
             "name": "assetCreateModule",
             "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collectNFT",
+            "type": "address"
           }
         ],
         "internalType": "struct AssetHubInfo",
@@ -289,6 +316,97 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "hub",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "initData",
+        "type": "bytes"
+      }
+    ],
+    "name": "createFeeAssetCreateModule",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "hub",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "initData",
+        "type": "bytes"
+      }
+    ],
+    "name": "createFeeCollectModuleImpl",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "initData",
+        "type": "bytes"
+      }
+    ],
+    "name": "createHubImpl",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "hubImpl",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "hub",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "initData",
+        "type": "bytes"
+      }
+    ],
+    "name": "createNftAssetGatedModuleImpl",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -309,6 +427,11 @@
             "internalType": "bool",
             "name": "collectNft",
             "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "assetCreateModule",
+            "type": "address"
           }
         ],
         "internalType": "struct AssetHubDeployData",
@@ -317,7 +440,13 @@
       }
     ],
     "name": "deploy",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -335,6 +464,46 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "factories",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "assetHubFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModuleFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "nftGatedModuleFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCreateAssetModuleFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collectNFTFactory",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct AssetHubImplData",
+        "name": "",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -363,9 +532,14 @@
             "internalType": "address",
             "name": "feeCreateAssetModuleFactory",
             "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collectNFTFactory",
+            "type": "address"
           }
         ],
-        "internalType": "struct AssetHubImplInitData",
+        "internalType": "struct AssetHubImplData",
         "name": "data",
         "type": "tuple"
       }
@@ -404,6 +578,46 @@
   {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "assetHubFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCollectModuleFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "nftGatedModuleFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "feeCreateAssetModuleFactory",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "collectNFTFactory",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct AssetHubImplData",
+        "name": "data",
+        "type": "tuple"
+      }
+    ],
+    "name": "setFactories",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -455,6 +669,19 @@
     "name": "upgradeToAndCall",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "version",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
